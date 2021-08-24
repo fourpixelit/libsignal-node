@@ -43,3 +43,35 @@ exports.generatePreKey = function(keyId) {
         keyPair
     };
 };
+
+exports.generateSenderKey = function() {
+    return nodeCrypto.randomBytes(32);
+}
+
+exports.generateSenderKeyId = function() {
+    return nodeCrypto.randomInt(2147483647);
+}
+
+exports.generateSenderSigningKey = function(key) {
+    if (!key) {
+        key = curve.generateKeyPair();
+    }
+
+    return {
+        public: key.pubKey,
+        private: key.privKey,
+    };
+} 
+
+/*
+def generateSenderSigningKey():
+        return Curve.generateKeyPair()
+
+    @staticmethod
+    def generateSenderKey():
+        return os.urandom(32)
+
+    @staticmethod
+    def generateSenderKeyId():
+        return KeyHelper.getRandomSequence(2147483647)
+*/
