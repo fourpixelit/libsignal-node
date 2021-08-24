@@ -18,4 +18,5 @@ exports.HKDFv2 = require('./src/hkdfv2');
 exports.HKDFv3 = require('./src/hkdfv3');
 exports.GroupCipher = require('./src/group_cipher');
 exports.GroupSessionBuilder = require('./src/group_session_builder');
+exports.SenderKeyDistributionMessage = require('./src/sender_key_distribution_message');
 Object.assign(exports, require('./src/errors'));
