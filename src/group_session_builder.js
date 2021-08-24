@@ -1,5 +1,5 @@
 //const utils = require('../../common/utils');
-//const SenderKeyDistributionMessage = require('../protocol/SenderKeyDistributionMessage');
+const SenderKeyDistributionMessage = require('./sender_key_distribution_message');
 
 const keyhelper = require("./keyhelper");
 class GroupSessionBuilder {
