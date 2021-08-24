@@ -1,4 +1,4 @@
-const SenderMessageKey = require('./SenderMessageKey');
+const SenderMessageKey = require('./sender_message_key');
 //const HKDF = require('./hkdf');
 const crypto = require('..');
 
