@@ -25,6 +25,14 @@ class ProtocolAddress {
         this.deviceId = deviceId;
     }
 
+    getDeviceId() {
+        return this.deviceId;
+    }
+
+    getName() {
+        return this.id;
+    }
+
     toString() {
         return `${this.id}.${this.deviceId}`;
     }

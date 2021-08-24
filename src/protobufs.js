@@ -12,4 +12,7 @@ module.exports = {
     PreKeyWhisperMessage: whisper.lookup('PreKeyWhisperMessage'),
     SenderKeyDistributionMessage: whisper.lookup('SenderKeyDistributionMessage'),
     SenderKeyMessage: whisper.lookup('SenderKeyMessage'),
+    SenderKeyStateStructure: local.lookup('SenderKeyStateStructure'),
+    SenderChainKey: local.lookup('SenderChainKey'),
+    SenderSigningKey: local.lookup('SenderSigningKey'),
 };
