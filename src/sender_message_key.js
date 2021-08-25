@@ -1,5 +1,4 @@
-const HKDFv3 = require('./hkdfv3');
-
+const { deriveSecrets } = require('./crypto');
 class SenderMessageKey {
     iteration = 0;
 
@@ -10,22 +9,15 @@ class SenderMessageKey {
     seed = Buffer.alloc(0);
 
     constructor(iteration, seed) {
-        const derivative = new HKDFv3().deriveSecrets(seed, Buffer.from('WhisperGroup'), 48);
-        /*const derivative = deriveSecrets(seed, Buffer.alloc(32), Buffer.from('WhisperGroup'));
-        const A = derivative[0];
-        const e = derivative[1];
-        var t = new Uint8Array(32);
-        t.set(new Uint8Array(A.slice(16)));
-        t.set(new Uint8Array(e.slice(0, 16)), 16);
-        this.iv = Buffer.from(A.slice(0, 16));
-        this.cipherKey = Buffer.from(t.buffer);
-        */
-
+        const derivative = deriveSecrets(seed, Buffer.alloc(32), Buffer.from('WhisperGroup'));
+        const keys = new Uint8Array(32);
+        keys.set(new Uint8Array(derivative[0].slice(16)));
+        keys.set(new Uint8Array(derivative[1].slice(0, 16)), 16);
+        this.iv = Buffer.from(derivative[0].slice(0, 16));
+        this.cipherKey = Buffer.from(keys.buffer);
 
         this.iteration = iteration;
         this.seed = seed;
-        this.iv = derivative.slice(0, 16);
-        this.cipherKey = derivative.slice(16);
     }
 
     getIteration() {
