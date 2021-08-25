@@ -94,7 +94,7 @@ class SenderKeyState {
     }
 
     addSenderMessageKey(senderMessageKey) {
-        const senderMessageKeyStructure = protobufs.SenderMessageKey.create({
+        const senderMessageKeyStructure = protobufs.SenderKeyStateStructure.create({
             iteration: senderMessageKey.getIteration(),
             seed: senderMessageKey.getSeed(),
         });

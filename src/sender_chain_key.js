@@ -1,6 +1,6 @@
 const SenderMessageKey = require('./sender_message_key');
 //const HKDF = require('./hkdf');
-const crypto = require('..');
+const crypto = require('./crypto');
 
 class SenderChainKey {
   MESSAGE_KEY_SEED = Buffer.from([0x01]);
@@ -40,7 +40,7 @@ class SenderChainKey {
 
   getDerivative(seed, key) {
     key = typeof key === 'string' ? Buffer.from(key, 'base64') : key;
-    const hash =crypto.calculateMAC(key, seed);
+    const hash = crypto.calculateMAC(key, seed);
     //const hash = new Hash().hmac_hash(key, seed, 'sha256', '');
     
     return hash;

@@ -1,5 +1,5 @@
 const SenderKeyMessage = require('./sender_key_message');
-const curve = require('./curve');
+const crypto = require('./crypto');
 
 class GroupCipher {
   constructor(senderKeyStore, senderKeyName) {
@@ -87,7 +87,7 @@ class GroupCipher {
 
   getPlainText(iv, key, ciphertext) {
     try {
-      const plaintext = curve.decrypt(key, iv, ciphertext);
+      const plaintext = crypto.decrypt(key, ciphertext, iv);
       return plaintext;
     } catch (e) {
       console.log(e.stack);
@@ -99,7 +99,7 @@ class GroupCipher {
     try {
       iv = typeof iv === 'string' ? Buffer.from(iv, 'base64') : iv;
       key = typeof key === 'string' ? Buffer.from(key, 'base64') : key;
-      const crypted = curve.encrypt(key, iv, Buffer.from(plaintext));
+      const crypted = crypto.encrypt(key, Buffer.from(plaintext), iv);
       return crypted;
     } catch (e) {
       console.log(e.stack);
