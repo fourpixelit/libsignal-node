@@ -31,7 +31,7 @@ class SenderKeyDistributionMessage extends CiphertextMessage {
       this.id = id;
       this.iteration = iteration;
       this.chainKey = chainKey;
-      this.signatureKey = Buffer.concat([Buffer.from([0x05]), signatureKey]);
+      this.signatureKey = signatureKey;
       const message = protobufs.SenderKeyDistributionMessage.encode(
         protobufs.SenderKeyDistributionMessage.create({
           id,
