@@ -2,17 +2,17 @@
 
 // Remove the dubious emscripten callback that invokes process.exit(1) on any
 // unhandledRejection event.
-let _exitCallback;
+/*let _exitCallback;
 const captureExitCallback = (ev, callback) => {
     if (ev === 'unhandledRejection') {
         _exitCallback = callback;  // Must remove outside emit context.
         process.removeListener(ev, callback);
     }
-};
-process.addListener('newListener', captureExitCallback);
+};*/
+//process.addListener('newListener', captureExitCallback);
 const curve25519 = require('../build/curve25519');
-process.removeListener('newListener', captureExitCallback);
-process.removeListener('unhandledRejection', _exitCallback);
+//process.removeListener('newListener', captureExitCallback);
+//process.removeListener('unhandledRejection', _exitCallback);
 
 // Insert some bytes into the emscripten memory and return a pointer
 function _allocate(bytes) {
