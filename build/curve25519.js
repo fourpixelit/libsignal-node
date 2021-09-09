@@ -59,14 +59,14 @@ if (ENVIRONMENT_IS_NODE) {
  if (typeof module !== "undefined") {
   module["exports"] = Module;
  }
- process["on"]("uncaughtException", (function(ex) {
+ /*process["on"]("uncaughtException", (function(ex) {
   if (!(ex instanceof ExitStatus)) {
    throw ex;
   }
  }));
  process["on"]("unhandledRejection", (function(reason, p) {
   process["exit"](1);
- }));
+ }));*/
  Module["quit"] = (function(status) {
   process["exit"](status);
  });

@@ -8,7 +8,7 @@ class GroupSessionBuilder {
   }
 
   async process(senderKeyName, senderKeyDistributionMessage) {
-    console.log('GroupSessionBuilder process', senderKeyName, senderKeyDistributionMessage);
+    //console.log('GroupSessionBuilder process', senderKeyName, senderKeyDistributionMessage);
     const senderKeyRecord = await this.senderKeyStore.loadSenderKey(senderKeyName);
     senderKeyRecord.addSenderKeyState(
       senderKeyDistributionMessage.getId(),
@@ -23,7 +23,7 @@ class GroupSessionBuilder {
   async create(senderKeyName) {
     try {
       const senderKeyRecord = await this.senderKeyStore.loadSenderKey(senderKeyName);
-      console.log('GroupSessionBuilder create session', senderKeyName, senderKeyRecord);
+      //console.log('GroupSessionBuilder create session', senderKeyName, senderKeyRecord);
 
       if (senderKeyRecord.isEmpty()) {
         const keyId = keyhelper.generateSenderKeyId();
@@ -43,7 +43,7 @@ class GroupSessionBuilder {
         state.getSigningKeyPublic()
       );
     } catch (e) {
-      console.log(e.stack);
+      //console.log(e.stack);
       throw new Error(e);
     }
   }

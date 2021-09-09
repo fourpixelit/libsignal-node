@@ -124,6 +124,7 @@ class SessionCipher {
                 type = 1;  // normal
                 body = result;
             }
+            
             return {
                 type,
                 body,
