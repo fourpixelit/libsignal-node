@@ -4,6 +4,13 @@
 const curve25519 = require('../src/curve25519_wrapper');
 const nodeCrypto = require('crypto');
 
+const PUBLIC_KEY_DER_PREFIX = new Uint8Array([
+    48, 42, 48, 5, 6, 3, 43, 101, 110, 3, 33, 0
+]);
+  
+const PRIVATE_KEY_DER_PREFIX = new Uint8Array([
+    48, 46, 2, 1, 0, 48, 5, 6, 3, 43, 101, 110, 4, 34, 4, 32
+]);
 
 function validatePrivKey(privKey) {
     if (privKey === undefined) {
@@ -52,7 +59,22 @@ exports.calculateAgreement = function(pubKey, privKey) {
     if (!pubKey || pubKey.byteLength != 32) {
         throw new Error("Invalid public key");
     }
-    return Buffer.from(curve25519.sharedSecret(pubKey, privKey));
+    // return Buffer.from(curve25519.sharedSecret(pubKey, privKey));
+    const nodePrivateKey = nodeCrypto.createPrivateKey({
+        key: Buffer.concat([PRIVATE_KEY_DER_PREFIX, privKey]),
+        format: 'der',
+        type: 'pkcs8'
+    });
+    const nodePublicKey = nodeCrypto.createPublicKey({
+        key: Buffer.concat([PUBLIC_KEY_DER_PREFIX, pubKey]),
+        format: 'der',
+        type: 'spki'
+    });
+    
+    return nodeCrypto.diffieHellman({
+        privateKey: nodePrivateKey,
+        publicKey: nodePublicKey,
+    });
 };
 
 exports.calculateSignature = function(privKey, message) {
@@ -78,6 +100,22 @@ exports.verifySignature = function(pubKey, msg, sig) {
 };
 
 exports.generateKeyPair = function() {
-    const privKey = nodeCrypto.randomBytes(32);
-    return exports.createKeyPair(privKey);
+    const {publicKey: publicDerBytes, privateKey: privateDerBytes} = nodeCrypto.generateKeyPairSync(
+        'x25519',
+        {
+            publicKeyEncoding: { format: 'der', type: 'spki' },
+            privateKeyEncoding: { format: 'der', type: 'pkcs8' }
+        }
+    );
+    // 33 bytes
+    // first byte = 5 (version byte)
+    const pubKey = publicDerBytes.slice(PUBLIC_KEY_DER_PREFIX.length-1, PUBLIC_KEY_DER_PREFIX.length + 32);
+    pubKey[0] = 5;
+
+    const privKey = privateDerBytes.slice(PRIVATE_KEY_DER_PREFIX.length, PRIVATE_KEY_DER_PREFIX.length + 32);
+
+    return {
+        pubKey,
+        privKey
+    };
 };
