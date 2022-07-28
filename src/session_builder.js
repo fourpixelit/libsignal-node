@@ -17,7 +17,7 @@ class SessionBuilder {
         this.storage = storage;
     }
 
-    async initOutgoing(device) {
+    async initOutgoing(device, onlyMemory = false) {
         const fqAddr = this.addr.toString();
         return await queueJob(fqAddr, async () => {
             if (!await this.storage.isTrustedIdentity(this.addr.id, device.identityKey)) {
@@ -37,7 +37,7 @@ class SessionBuilder {
             if (device.preKey) {
                 session.pendingPreKey.preKeyId = device.preKey.keyId;
             }
-            let record = await this.storage.loadSession(fqAddr);
+            let record = await this.storage.loadSession(fqAddr, onlyMemory);
             if (!record) {
                 record = new SessionRecord();
             } else {
