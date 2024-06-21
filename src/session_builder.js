@@ -48,7 +48,10 @@ class SessionBuilder {
                 }
             }
             record.setSession(session);
-            await this.storage.storeSession(fqAddr, record);
+            await Promise.all([
+                await this.storage.storeSession(fqAddr, record),
+                await this.storage.saveIdentity(this.addr, device.identityKey)
+            ]);
         });
     }
 
