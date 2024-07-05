@@ -33,7 +33,12 @@ class SenderKeyRecord {
     }
   
     addSenderKeyState(id, iteration, chainKey, signatureKey) {
+      this.senderKeyStates = this.senderKeyStates.slice(this.senderKeyStates.length > this.MAX_STATES - 1 ? 1 : 0);
       this.senderKeyStates.push(new SenderKeyState(id, iteration, chainKey, null, signatureKey));
+      if (this.senderKeyStates.length > this.MAX_STATES) {
+        const diff = this.senderKeyStates.length - this.MAX_STATES;
+        this.senderKeyStates.splice(0, diff);
+      }
     }
   
     setSenderKeyState(id, iteration, chainKey, keyPair) {
