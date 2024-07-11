@@ -259,7 +259,7 @@ class SessionCipher {
         if (counter - chain.chainKey.counter > 2000) {
             throw new errors.SessionError('Over 2000 messages into the future!');
         }
-        if (chain.chainKey.key === undefined) {
+        if (chain.closed || chain.chainKey.key === undefined) {
             throw new errors.SessionError('Chain closed');
         }
         const key = chain.chainKey.key;
@@ -277,7 +277,7 @@ class SessionCipher {
         let previousRatchet = session.getChain(ratchet.lastRemoteEphemeralKey);
         if (previousRatchet) {
             this.fillMessageKeys(previousRatchet, previousCounter);
-            delete previousRatchet.chainKey.key;  // Close
+            previousRatchet.closed = Date.now();
         }
         this.calculateRatchet(session, remoteKey, false);
         // Now swap the ephemeral key and calculate the new sending chain
